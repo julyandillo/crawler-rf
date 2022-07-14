@@ -5,3 +5,6 @@ class Urls:
     def url_pagina_equipos() -> str:
         return f"{Urls.dominio}/primera2023/grupo1/equipos"
 
+    @staticmethod
+    def url_calendario() -> str:
+        return f"{Urls.dominio}/primera2023/grupo1/calendario"
