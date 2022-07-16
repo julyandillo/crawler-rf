@@ -35,3 +35,4 @@ class RastreadorEquipos:
     def visualiza_equipos_rastreados(self):
         for equipo in self._equipos_rastreados:
             print(equipo)
+            input()
