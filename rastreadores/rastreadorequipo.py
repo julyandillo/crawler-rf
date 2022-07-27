@@ -1,6 +1,8 @@
-from modelos.equipo import Equipo
 from sopa import Sopa
+
+from modelos.equipo import Equipo
 from url import Urls
+from almacenes.almacenequipos import AlmacenEquipos
 
 
 def rastrea_equipo(url: str) -> Equipo:
@@ -22,6 +24,7 @@ class RastreadorEquipos:
 
     def __init__(self):
         self._equipos_rastreados = []
+        self._almacen = AlmacenEquipos()
 
     def rastrea_equipos(self):
         equipos = Sopa(Urls.url_pagina_equipos()).get_sopa()
@@ -32,7 +35,10 @@ class RastreadorEquipos:
                 print(f"{equipo} rastreado")
                 self._equipos_rastreados.append(equipo)
 
+        self._almacen.guarda(self._equipos_rastreados)
+        print(*self._equipos_rastreados, sep='\n')
+
     def visualiza_equipos_rastreados(self):
         for equipo in self._equipos_rastreados:
             print(equipo)
-            input()
+            espera = input()

@@ -35,5 +35,5 @@ class RastreadorCalendario:
         if numero not in self.jornadas.keys():
             print('Jornada no encontrada')
 
-        (self.jornadas.get(numero)).ver_jornada(numero)
-        input()
+        (self.jornadas.get(int(numero))).ver_jornada(numero)
+        espera = input()
