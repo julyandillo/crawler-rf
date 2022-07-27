@@ -39,6 +39,7 @@ class RastreadorEquipos:
         print(*self._equipos_rastreados, sep='\n')
 
     def visualiza_equipos_rastreados(self):
-        for equipo in self._equipos_rastreados:
-            print(equipo)
-            espera = input()
+        equipo = input('Nombre corto del equipo: ')
+        print(self._almacen.lee(equipo))
+
+        espera = input()
