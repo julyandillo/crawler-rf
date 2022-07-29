@@ -1,7 +1,7 @@
-from modelos.modelo import Modelo
+from modelos.modelable import Modelable
 
 
-class Estadio(Modelo):
+class Estadio(Modelable):
     def __init__(self):
         super().__init__([
             'Nombre del estadio',
@@ -9,18 +9,21 @@ class Estadio(Modelo):
             'Dirección',
             'Año de construcción',
             'Tamaño',
-            'Ciudad'
+            'Ciudad',
         ])
 
     def __str__(self):
-        return f"{self.get_nombre()} [{self.get_capacidad()} espectadores], {self.get('Ciudad')}"
+        return f"{self.get_nombre()} [{self.get_capacidad()} espectadores], {super().get('Ciudad')}"
 
     def get_nombre(self) -> str:
-        return self.get('Nombre del estadio').replace('Estadio ', '')
+        return super().get('Nombre del estadio').replace('Estadio ', '')
 
     def get_capacidad(self) -> int:
-        return int(self.get('Capacidad'))
+        return int(super().get('Capacidad'))
 
     def set_ciudad(self, ciudad: str):
-        self.guarda('Ciudad', ciudad)
+        super().set('Ciudad', ciudad)
+
+    def json_serialize(self) -> dict:
+        return super().get_model()
 

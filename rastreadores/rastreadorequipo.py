@@ -12,9 +12,9 @@ def rastrea_equipo(url: str) -> Equipo:
 
     for li in sopa.select('#text1 li'):
         spans = li("span")
-        if spans[0].text in equipo_rastreado.get_lista_datos_necesarios():
+        if spans[0].text in equipo_rastreado.get_lista_campos_disponibles():
             # print(f"{spans[0].text}: {spans[1].text}")
-            equipo_rastreado.guarda(spans[0].text, spans[1].text)
+            equipo_rastreado.set(spans[0].text, spans[1].text)
 
     return equipo_rastreado
 
