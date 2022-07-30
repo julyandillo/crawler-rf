@@ -35,11 +35,11 @@ class RastreadorEquipos:
                 print(f"{equipo} rastreado")
                 self._equipos_rastreados.append(equipo)
 
-        self._almacen.guarda(self._equipos_rastreados)
+        self._almacen.save_all_teams(self._equipos_rastreados)
         print(*self._equipos_rastreados, sep='\n')
 
     def visualiza_equipos_rastreados(self):
         equipo = input('Nombre corto del equipo: ')
-        print(self._almacen.lee(equipo))
+        print(self._almacen.load_team(equipo))
 
         espera = input()

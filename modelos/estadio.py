@@ -24,6 +24,5 @@ class Estadio(Modelable):
     def set_ciudad(self, ciudad: str):
         super().set('Ciudad', ciudad)
 
-    def json_serialize(self) -> dict:
-        return super().get_model()
-
+    def get_fields_to_json_serialize(self) -> list:
+        return list(super().get_model().keys())

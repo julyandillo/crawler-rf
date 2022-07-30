@@ -19,6 +19,15 @@ class Modelable(metaclass=ABCMeta):
     def get_model(self) -> dict:
         return self._model.get_modelo()
 
-    @abstractmethod
     def json_serialize(self) -> dict:
+        # dict_to_json = {}.fromkeys()
+        # for field in self.get_fields_to_json_serialize():
+        #     dict_to_json[field] = self._model.get(field)
+        #
+        # return dict_to_json
+        return {key: value for key, value in self._model.get_modelo().items() if
+                key in self.get_fields_to_json_serialize()}
+
+    @abstractmethod
+    def get_fields_to_json_serialize(self) -> list:
         pass

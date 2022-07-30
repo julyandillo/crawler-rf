@@ -21,5 +21,9 @@ class Equipo(Modelable):
     def get_ciudad(self) -> str:
         return super().get('Ciudad')
 
-    def json_serialize(self) -> dict:
-        return super().get_model()
+    def get_fields_to_json_serialize(self) -> list:
+        return [
+            'Nombre corto',
+            'Nombre completo',
+            'Ciudad',
+        ]
