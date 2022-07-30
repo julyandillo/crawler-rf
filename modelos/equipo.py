@@ -1,3 +1,4 @@
+from modelos.jsonstructure import JsonStructure
 from modelos.modelable import Modelable
 
 
@@ -21,9 +22,13 @@ class Equipo(Modelable):
     def get_ciudad(self) -> str:
         return super().get('Ciudad')
 
-    def get_fields_to_json_serialize(self) -> list:
-        return [
+    @classmethod
+    def get_json_structure(cls) -> JsonStructure:
+        return JsonStructure(
             'Nombre corto',
-            'Nombre completo',
-            'Ciudad',
-        ]
+            [
+                'Nombre corto',
+                'Nombre completo',
+                'Presidente',
+                'Ciudad',
+            ])

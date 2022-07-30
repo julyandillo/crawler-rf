@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from modelos.model import Model
+from modelos.jsonstructure import JsonStructure
 
 
 class Modelable(metaclass=ABCMeta):
@@ -20,14 +21,14 @@ class Modelable(metaclass=ABCMeta):
         return self._model.get_modelo()
 
     def json_serialize(self) -> dict:
-        # dict_to_json = {}.fromkeys()
-        # for field in self.get_fields_to_json_serialize():
-        #     dict_to_json[field] = self._model.get(field)
-        #
-        # return dict_to_json
+        """
+        para poder guardar cada modelo como json, se devuelve un diccionario SOLO con los valores que están
+        definidos para ser almacenados en cada modelo
+        """
         return {key: value for key, value in self._model.get_modelo().items() if
-                key in self.get_fields_to_json_serialize()}
+                key in self.get_json_structure().values}
 
+    @classmethod
     @abstractmethod
-    def get_fields_to_json_serialize(self) -> list:
+    def get_json_structure(cls) -> JsonStructure:
         pass

@@ -1,13 +1,8 @@
-import json
-
 from modelos.equipo import Equipo
+from utils.utils import generate_dict_teams_from_list
 from services.jsonservices import json_serialize, json_deserialize
 
 FILE_TEAMS = 'equipos.json'
-
-
-def _dict_generate_from_list(teams):
-    return {team.get('Nombre corto'): team for team in teams}
 
 
 class AlmacenEquipos:
@@ -16,14 +11,14 @@ class AlmacenEquipos:
 
     def save_all_teams(self, teams: list[Equipo]):
         json_serialize(FILE_TEAMS, teams)
-        self._equipos_almacenados = _dict_generate_from_list(teams)
+        self._equipos_almacenados = generate_dict_teams_from_list(Equipo.get_json_structure().key, teams)
 
     def save_team(self, equipo: Equipo):
         if not self._equipos_almacenados:
             self.load_all_teams()
 
         # se añade el nuevo equipo al diccionario (si ya existía se reeemplazará por el nuevo)
-        self._equipos_almacenados['Nombre corto'] = equipo
+        self._equipos_almacenados[Equipo.get_json_structure().key] = equipo
 
         self.save_all_teams(list(self._equipos_almacenados.values()))
 
@@ -35,4 +30,5 @@ class AlmacenEquipos:
         return self._equipos_almacenados.get(clave, 'Equipo no encontrado')
 
     def load_all_teams(self):
-        self._equipos_almacenados = _dict_generate_from_list(json_deserialize(FILE_TEAMS))
+        self._equipos_almacenados = generate_dict_teams_from_list(Equipo.get_json_structure().key,
+                                                                  json_deserialize(FILE_TEAMS))

@@ -1,3 +1,4 @@
+from modelos.jsonstructure import JsonStructure
 from modelos.modelable import Modelable
 
 
@@ -24,5 +25,6 @@ class Estadio(Modelable):
     def set_ciudad(self, ciudad: str):
         super().set('Ciudad', ciudad)
 
-    def get_fields_to_json_serialize(self) -> list:
-        return list(super().get_model().keys())
+    @classmethod
+    def get_json_structure(cls) -> JsonStructure:
+        return JsonStructure('Nombre del estadio', super().get_model().keys())
