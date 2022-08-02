@@ -4,9 +4,10 @@ from datetime import datetime
 
 @dataclass
 class Partido:
-    equipo_local: str = ''
-    equipo_visitante: str = ''
-    fecha: datetime = datetime.now()
+    def __init__(self):
+        self.equipo_local: str = ''
+        self.equipo_visitante: str = ''
+        self.fecha: datetime = datetime.now()
 
     def __str__(self):
         return f'{self.equipo_local.center(15)} - {self.equipo_visitante.center(15)} [{self.get_fecha()} {self.get_hora()}]'

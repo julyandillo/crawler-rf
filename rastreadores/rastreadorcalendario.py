@@ -4,11 +4,10 @@ from url import Urls
 from sopa import Sopa
 from modelos.jornada import Jornada
 from modelos.partido import Partido
+from exceptions.InvalidKeyError import InvalidKeyError
 
 
 class RastreadorCalendario:
-    jornadas: dict
-
     def __init__(self):
         self.jornadas = {}
 
@@ -31,9 +30,9 @@ class RastreadorCalendario:
             print(f"Jornada {jornada.numero} rastreada")
 
     def visualiza_jornada(self):
-        numero = input('Numero de jornada: ')
+        numero = int(input('Numero de jornada: '))
         if numero not in self.jornadas.keys():
-            print('Jornada no encontrada')
+            raise InvalidKeyError(numero)
 
-        (self.jornadas.get(int(numero))).ver_jornada(numero)
+        (self.jornadas.get(numero)).ver_jornada()
         espera = input()
