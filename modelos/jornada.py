@@ -2,9 +2,6 @@ from modelos.partido import Partido
 
 
 class Jornada:
-    numero: int
-    _partidos: list
-
     def __init__(self, numero: int):
         self.numero = numero
         self._partidos = []
