@@ -14,7 +14,10 @@ class Equipo(Modelable):
             'Año de Fundación',
             'Sitio Web',
             'Ciudad',
+            'Pais',
         ])
+
+        super().set('Pais', 'España')
 
     def __str__(self):
         return f"{super().get('Nombre del equipo')} ({super().get('Nombre corto')})"
@@ -29,6 +32,11 @@ class Equipo(Modelable):
             [
                 'Nombre corto',
                 'Nombre completo',
+                'Nombre del equipo',
                 'Presidente',
                 'Ciudad',
+                'Sitio Web',
+                'Entrenador',
+                'Año de Fundación',
+                'Pais'
             ])
