@@ -22,9 +22,9 @@ def rastrea_equipo(url: str) -> Equipo:
 class RastreadorEquipos:
     _equipos_rastreados: list
 
-    def __init__(self):
+    def __init__(self, almacen: AlmacenEquipos):
         self._equipos_rastreados = []
-        self._almacen = AlmacenEquipos()
+        self._almacen = almacen
 
     def rastrea_equipos(self):
         equipos = Sopa(Urls.url_pagina_equipos()).get_sopa()

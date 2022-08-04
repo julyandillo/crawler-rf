@@ -3,6 +3,7 @@ from consolemenu.items import MenuItem, SubmenuItem, FunctionItem
 
 from rastreadores.rastreadorequipo import RastreadorEquipos
 from rastreadores.rastreadorcalendario import RastreadorCalendario
+from almacenes.almacenequiposjson import AlmacenEquiposJson
 
 
 class Menu:
@@ -11,7 +12,7 @@ class Menu:
     def __init__(self):
         self._menu = ConsoleMenu("Crawler resultados-futbol.com")
 
-        rastreador_equipos = RastreadorEquipos()
+        rastreador_equipos = RastreadorEquipos(AlmacenEquiposJson())
         rastreador_calendario = RastreadorCalendario()
 
         item_rastrea_equipos = FunctionItem("Rastrea equipos", rastreador_equipos.rastrea_equipos)
