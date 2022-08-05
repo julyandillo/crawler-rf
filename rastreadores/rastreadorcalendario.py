@@ -18,7 +18,8 @@ class RastreadorCalendario:
 
         for html in sopa.select('.col-calendar-content .boxhome'):
             titulo_jornada = html.find('span', class_='titlebox').text
-            jornada = Jornada(int(titulo_jornada.split(' ')[1]))
+            jornada = Jornada()
+            jornada.set_numero(int(titulo_jornada.split(' ')[1]))
 
             for tr in html.find_all('tr'):
                 partido = Partido()
@@ -28,10 +29,10 @@ class RastreadorCalendario:
 
                 jornada.agrega_partido(partido)
 
-            self._jornadas[jornada.numero] = jornada
+            # self._jornadas[jornada.numero] = jornada
             self._almacen.save(jornada)
 
-            print(f"Jornada {jornada.numero} rastreada")
+            print(f"Jornada {jornada.get_numero()} rastreada")
 
     def visualiza_jornada(self):
         if not self._jornadas:

@@ -8,40 +8,44 @@ from utils.utils import date_format
 
 class Jornada(Modelable):
     modelo = [
-            'numero',
-            'fecha_inicio',
-            'fecha_fin'
-        ]
+        'numero',
+        'fecha_inicio',
+        'fecha_fin'
+    ]
 
-    def __init__(self, numero: int):
+    def __init__(self):
         super().__init__(Jornada.modelo)
 
-        self.numero = numero
-        self.set('numero', numero)
-        self.fecha_inicio = None
-        self.fecha_fin = None
+        self._time_fecha_inicio = None
+        self._time_fecha_fin = None
         self._partidos = []
 
     def __str__(self):
-        return f'Jornada {self.numero}'
+        return f"Jornada {self.get('numero')}"
+
+    def set_numero(self, numero: int) -> None:
+        self.set('numero', numero)
+
+    def get_numero(self) -> int:
+        return self.get('numero')
 
     def agrega_partido(self, partido: Partido):
         self._partidos.append(partido)
         fecha_partido = datetime.strptime(partido.get_fecha(), '%d-%m-%Y')
 
-        if not self.fecha_inicio or self.fecha_inicio > fecha_partido:
-            self.fecha_inicio = fecha_partido
+        if not self._time_fecha_inicio or self._time_fecha_inicio > fecha_partido:
+            self._time_fecha_inicio = fecha_partido
 
-        if not self.fecha_fin or self.fecha_fin < fecha_partido:
-            self.fecha_fin = fecha_partido
+        if not self._time_fecha_fin or self._time_fecha_fin < fecha_partido:
+            self._time_fecha_fin = fecha_partido
 
-        self.set('fecha_inicio', date_format(self.fecha_inicio))
-        self.set('fecha_fin', date_format(self.fecha_fin))
+        self.set('fecha_inicio', date_format(self._time_fecha_inicio))
+        self.set('fecha_fin', date_format(self._time_fecha_fin))
 
     def ver_jornada(self):
         print(''.ljust(50, '-'))
-        print(f'Jornada {self.numero}:')
-        print(f"Inicio: {date_format(self.fecha_inicio)} | Fin: {date_format(self.fecha_fin)}")
+        print(f'Jornada {self.get("numero")}:')
+        print(f"Inicio: {self.get('fecha_inicio')} | Fin: {self.get('fecha_fin')}")
         print(''.ljust(50, '-'))
         print(*self._partidos, sep='\n')
 

@@ -2,6 +2,7 @@ from almacenes.almacenjornadas import AlmacenJornadas
 from modelos.jornada import Jornada
 from services.jsonservices import save_as_json, load_from_json
 from utils.utils import generate_dict_from_list
+from exceptions import InvalidKeyError
 
 
 FILE_NAME = 'jornadas.json'
@@ -19,8 +20,20 @@ class AlmacenJornadasJson(AlmacenJornadas):
         if not self._jornadas:
             self.load_all()
 
-        return self._jornadas.get(numero_jornada, 'Jornada no encontrada')
+        if numero_jornada not in self._jornadas.keys():
+            raise InvalidKeyError(numero_jornada)
+
+        return self._jornadas.get(numero_jornada)
 
     def load_all(self) -> dict:
-        self._jornadas = generate_dict_from_list(Jornada.get_json_structure().key, load_from_json(FILE_NAME))
+        self._jornadas = generate_dict_from_list(Jornada.get_json_structure().key,
+                                                 [self._crea_jornada(jornada) for jornada in load_from_json(FILE_NAME)])
         return self._jornadas
+
+    def _crea_jornada(self, jornada_almacenada: dict) -> Jornada:
+        jornada = Jornada()
+        for key, value in jornada_almacenada.items():
+            jornada.set(key, value)
+        # jornada.set('fecha_inicio', jornada_almacenada['fecha_inicio'])
+        # jornada.set('fecha_fin', jornada_almacenada['fecha_fin'])
+        return jornada
