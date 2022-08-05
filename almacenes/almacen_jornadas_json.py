@@ -1,8 +1,8 @@
-from almacenes.almacenjornadas import AlmacenJornadas
+from almacenes.almacen_jornadas import AlmacenJornadas
 from modelos.jornada import Jornada
-from services.jsonservices import save_as_json, load_from_json
+from services.json_services import save_as_json, load_from_json
 from utils.utils import generate_dict_from_list
-from exceptions import InvalidKeyError
+from exceptions import invalid_key_error
 
 
 FILE_NAME = 'jornadas.json'

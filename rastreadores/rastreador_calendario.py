@@ -4,8 +4,8 @@ from url import Urls
 from sopa import Sopa
 from modelos.jornada import Jornada
 from modelos.partido import Partido
-from almacenes.almacenjornadas import AlmacenJornadas
-from exceptions.InvalidKeyError import InvalidKeyError
+from almacenes.almacen_jornadas import AlmacenJornadas
+from exceptions.invalid_key_error import InvalidKeyError
 
 
 class RastreadorCalendario:

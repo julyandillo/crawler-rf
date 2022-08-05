@@ -1,4 +1,4 @@
-from exceptions.InvalidKeyError import InvalidKeyError
+from exceptions.invalid_key_error import InvalidKeyError
 
 
 class Model:

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from modelos.jsonstructure import JsonStructure
+from modelos.json_structure import JsonStructure
 from modelos.modelable import Modelable
 from modelos.partido import Partido
 from utils.utils import date_format

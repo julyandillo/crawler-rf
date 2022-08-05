@@ -1,7 +1,7 @@
-from almacenes.almacenequipos import AlmacenEquipos
-from almacenes.almacenequiposjson import AlmacenEquiposJson
-from almacenes.almacenjornadas import AlmacenJornadas
-from almacenes.almacenjornadasjson import AlmacenJornadasJson
+from almacenes.almacen_equipos import AlmacenEquipos
+from almacenes.almacen_equipos_json import AlmacenEquiposJson
+from almacenes.almacen_jornadas import AlmacenJornadas
+from almacenes.almacen_jornadas_json import AlmacenJornadasJson
 
 
 class AlmacenesFactory:

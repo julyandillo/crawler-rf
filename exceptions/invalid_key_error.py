@@ -1,4 +1,4 @@
-from exceptions.BaseError import BaseError
+from exceptions.base_error import BaseError
 
 
 class InvalidKeyError(BaseError):

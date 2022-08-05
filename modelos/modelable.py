@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from modelos.model import Model
-from modelos.jsonstructure import JsonStructure
+from modelos.json_structure import JsonStructure
 
 
 class Modelable(metaclass=ABCMeta):

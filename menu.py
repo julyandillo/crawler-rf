@@ -1,8 +1,8 @@
 from consolemenu import ConsoleMenu
 from consolemenu.items import MenuItem, SubmenuItem, FunctionItem
 
-from rastreadores.rastreadorequipo import RastreadorEquipos
-from rastreadores.rastreadorcalendario import RastreadorCalendario
+from rastreadores.rastreador_equipo import RastreadorEquipos
+from rastreadores.rastreador_calendario import RastreadorCalendario
 from almacenes.almacenes_factory import AlmacenesFactory
 
 

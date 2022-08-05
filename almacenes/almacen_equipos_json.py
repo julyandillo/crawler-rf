@@ -1,7 +1,7 @@
-from almacenes.almacenequipos import AlmacenEquipos
+from almacenes.almacen_equipos import AlmacenEquipos
 from modelos.equipo import Equipo
 from utils.utils import generate_dict_from_list
-from services.jsonservices import save_as_json, load_from_json
+from services.json_services import save_as_json, load_from_json
 
 FILE_TEAMS = 'equipos.json'
 

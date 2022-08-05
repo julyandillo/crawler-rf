@@ -1,4 +1,4 @@
-from modelos.jsonstructure import JsonStructure
+from modelos.json_structure import JsonStructure
 from modelos.modelable import Modelable
 
 

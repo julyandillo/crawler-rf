@@ -2,7 +2,7 @@ from sopa import Sopa
 
 from modelos.equipo import Equipo
 from url import Urls
-from almacenes.almacenequipos import AlmacenEquipos
+from almacenes.almacen_equipos import AlmacenEquipos
 
 
 def rastrea_equipo(url: str) -> Equipo:
