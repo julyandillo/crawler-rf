@@ -7,14 +7,17 @@ from utils.utils import date_format
 
 
 class Jornada(Modelable):
-    def __init__(self, numero: int):
-        super().__init__([
+    modelo = [
             'numero',
             'fecha_inicio',
             'fecha_fin'
-        ])
+        ]
+
+    def __init__(self, numero: int):
+        super().__init__(Jornada.modelo)
 
         self.numero = numero
+        self.set('numero', numero)
         self.fecha_inicio = None
         self.fecha_fin = None
         self._partidos = []
@@ -32,8 +35,8 @@ class Jornada(Modelable):
         if not self.fecha_fin or self.fecha_fin < fecha_partido:
             self.fecha_fin = fecha_partido
 
-        super().set('fecha_inicio', date_format(self.fecha_inicio))
-        super().set('fecha_fin', date_format(self.fecha_fin))
+        self.set('fecha_inicio', date_format(self.fecha_inicio))
+        self.set('fecha_fin', date_format(self.fecha_fin))
 
     def ver_jornada(self):
         print(''.ljust(50, '-'))
@@ -46,5 +49,5 @@ class Jornada(Modelable):
     def get_json_structure(cls) -> JsonStructure:
         return JsonStructure(
             'numero',
-            super().get_model().keys()
+            Jornada.modelo
         )

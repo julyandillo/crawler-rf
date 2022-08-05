@@ -13,7 +13,7 @@ class Menu:
         self._menu = ConsoleMenu("Crawler resultados-futbol.com")
 
         rastreador_equipos = RastreadorEquipos(AlmacenesFactory.get_almacen_equipos())
-        rastreador_calendario = RastreadorCalendario()
+        rastreador_calendario = RastreadorCalendario(AlmacenesFactory.get_almacen_jornadas())
 
         item_rastrea_equipos = FunctionItem("Rastrea equipos", rastreador_equipos.rastrea_equipos)
         item_rastrea_calendario = FunctionItem("Rastrea calendario", rastreador_calendario.rastrea_calendario)
@@ -24,7 +24,8 @@ class Menu:
 
         submenu_rastrea = SubmenuItem("Rastrea", menu_rastrea)
 
-        item_muestra_equipos = FunctionItem("Muestra equipos rastreados", rastreador_equipos.visualiza_equipos_rastreados)
+        item_muestra_equipos = FunctionItem("Muestra equipos rastreados",
+                                            rastreador_equipos.visualiza_equipos_rastreados)
         item_muestra_jornada = FunctionItem("Ver jornada", rastreador_calendario.visualiza_jornada)
 
         menu_visualizacion = ConsoleMenu("Visualización de datos rastreados")

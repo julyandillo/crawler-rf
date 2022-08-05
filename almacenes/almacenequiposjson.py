@@ -1,6 +1,6 @@
 from almacenes.almacenequipos import AlmacenEquipos
 from modelos.equipo import Equipo
-from utils.utils import generate_dict_teams_from_list
+from utils.utils import generate_dict_from_list
 from services.jsonservices import save_as_json, load_from_json
 
 FILE_TEAMS = 'equipos.json'
@@ -12,7 +12,7 @@ class AlmacenEquiposJson(AlmacenEquipos):
 
     def save_all_teams(self, teams: list[Equipo]) -> None:
         save_as_json(FILE_TEAMS, teams)
-        self._equipos_almacenados = generate_dict_teams_from_list(Equipo.get_json_structure().key, teams)
+        self._equipos_almacenados = generate_dict_from_list(Equipo.get_json_structure().key, teams)
 
     def save_team(self, equipo: Equipo) -> None:
         if not self._equipos_almacenados:
@@ -31,5 +31,5 @@ class AlmacenEquiposJson(AlmacenEquipos):
         return self._equipos_almacenados.get(clave, 'Equipo no encontrado')
 
     def load_all_teams(self) -> None:
-        self._equipos_almacenados = generate_dict_teams_from_list(Equipo.get_json_structure().key,
-                                                                  load_from_json(FILE_TEAMS))
+        self._equipos_almacenados = generate_dict_from_list(Equipo.get_json_structure().key,
+                                                            load_from_json(FILE_TEAMS))

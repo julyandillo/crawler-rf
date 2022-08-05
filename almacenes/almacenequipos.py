@@ -12,6 +12,7 @@ class AlmacenEquipos(metaclass=ABCMeta):
     def save_team(self, team: Equipo) -> None:
         pass
 
+    @abstractmethod
     def load_team(self, key: int | str) -> Equipo:
         pass
 

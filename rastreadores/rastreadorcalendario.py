@@ -4,12 +4,14 @@ from url import Urls
 from sopa import Sopa
 from modelos.jornada import Jornada
 from modelos.partido import Partido
+from almacenes.almacenjornadas import AlmacenJornadas
 from exceptions.InvalidKeyError import InvalidKeyError
 
 
 class RastreadorCalendario:
-    def __init__(self):
-        self.jornadas = {}
+    def __init__(self, almacen: AlmacenJornadas):
+        self._jornadas = {}
+        self._almacen = almacen
 
     def rastrea_calendario(self) -> None:
         sopa = Sopa(Urls.url_calendario()).get_sopa()
@@ -26,13 +28,18 @@ class RastreadorCalendario:
 
                 jornada.agrega_partido(partido)
 
-            self.jornadas[jornada.numero] = jornada
+            self._jornadas[jornada.numero] = jornada
+            self._almacen.save(jornada)
+
             print(f"Jornada {jornada.numero} rastreada")
 
     def visualiza_jornada(self):
+        if not self._jornadas:
+            self._jornadas = self._almacen.load_all()
+
         numero = int(input('Numero de jornada: '))
-        if numero not in self.jornadas.keys():
+        if numero not in self._jornadas.keys():
             raise InvalidKeyError(numero)
 
-        (self.jornadas.get(numero)).ver_jornada()
+        (self._jornadas.get(numero)).ver_jornada()
         espera = input()
