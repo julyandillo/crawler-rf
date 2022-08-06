@@ -1,8 +1,10 @@
 """
-Namedtuple para poder configurar la estructura de como serán los jsons. Básicamente se define un campo saber cual
- será la key y el valor del diccionario que se creará para guardarlo como json
+Namedtuple para poder configurar la estructura de como serán los jsons. Básicamente se define un campo para saber cual
+ será la key y una lista con los campos del modelo que se utlizaran para crear los jsons
 """
-from collections import namedtuple
+from typing import NamedTuple
 
 
-JsonStructure = namedtuple('JsonStructure', 'key values')
+class JsonStructure(NamedTuple):
+    key: str
+    values: list
