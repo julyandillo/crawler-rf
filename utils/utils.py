@@ -16,4 +16,4 @@ def date_format(date: datetime) -> str:
 
 
 def date_time_format(date: datetime) -> str:
-    return date.strftime('%d-%m-%Y %H:%M:%S')
+    return date.strftime('%d-%m-%Y %H:%M')

@@ -53,6 +53,14 @@ class Partido(Modelable):
     def get_hora(self) -> str:
         return self.fecha.strftime('%H:%M')
 
+    @staticmethod
+    def crea_partido(data: dict):
+        partido = Partido()
+        for key, value in data.items():
+            partido.set(key, value)
+
+        return partido
+
     @classmethod
     def get_json_structure(cls) -> JsonStructure:
         return JsonStructure(

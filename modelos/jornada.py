@@ -54,6 +54,18 @@ class Jornada(Modelable):
         print(''.ljust(50, '-'))
         print(*self._partidos, sep='\n')
 
+    @staticmethod
+    def crea_jornada(jornada_almacenada: dict):
+        jornada = Jornada()
+        for key, value in jornada_almacenada.items():
+            if key != 'partidos':
+                jornada.set(key, value)
+            else:
+                for partido_almacenado in value:
+                    jornada.agrega_partido(Partido.crea_partido(partido_almacenado))
+
+        return jornada
+
     @classmethod
     def get_json_structure(cls) -> JsonStructure:
         return JsonStructure(

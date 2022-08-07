@@ -8,14 +8,6 @@ from exceptions.invalid_key_error import InvalidKeyError
 FILE_NAME = 'jornadas.json'
 
 
-def _crea_jornada(jornada_almacenada: dict) -> Jornada:
-    jornada = Jornada()
-    for key, value in jornada_almacenada.items():
-        jornada.set(key, value)
-
-    return jornada
-
-
 class AlmacenJornadasJson(AlmacenJornadas):
     def __init__(self):
         self._jornadas = {}
@@ -34,6 +26,8 @@ class AlmacenJornadasJson(AlmacenJornadas):
         return self._jornadas.get(numero_jornada)
 
     def load_all(self) -> dict:
-        self._jornadas = generate_dict_from_list(Jornada.get_json_structure().key,
-                                                 [_crea_jornada(jornada) for jornada in load_from_json(FILE_NAME)])
+        self._jornadas = generate_dict_from_list(
+            Jornada.get_json_structure().key,
+            [Jornada.crea_jornada(jornada_almacenada) for jornada_almacenada in load_from_json(FILE_NAME)])
+
         return self._jornadas
