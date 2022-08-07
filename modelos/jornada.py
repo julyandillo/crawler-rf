@@ -10,7 +10,8 @@ class Jornada(Modelable):
     modelo = [
         'numero',
         'fecha_inicio',
-        'fecha_fin'
+        'fecha_fin',
+        'partidos'
     ]
 
     def __init__(self):
@@ -30,8 +31,9 @@ class Jornada(Modelable):
         return self.get('numero')
 
     def agrega_partido(self, partido: Partido):
-        self._partidos.append(partido)
+        self._partidos.append({key: partido.get(key) for key in Partido.get_json_structure().values})
         self.establece_fechas_de_jornada(partido.get_fecha())
+        self.set('partidos', self._partidos)
 
     def establece_fechas_de_jornada(self, fecha: str):
         fecha_nueva = datetime.strptime(fecha, '%d-%m-%Y')

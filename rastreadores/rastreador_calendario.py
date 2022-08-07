@@ -23,13 +23,12 @@ class RastreadorCalendario:
 
             for tr in html.find_all('tr'):
                 partido = Partido()
-                partido.equipo_local = tr.find('td', class_='equipo1').text
-                partido.equipo_visitante = tr.find('td', class_='equipo2').text
-                partido.fecha = datetime.fromisoformat(tr.find('span', class_='dtstart').text)
+                partido.set_equipo_local(tr.find('td', class_='equipo1').text)
+                partido.set_equipo_visitante(tr.find('td', class_='equipo2').text)
+                partido.set_fecha(datetime.fromisoformat(tr.find('span', class_='dtstart').text))
 
                 jornada.agrega_partido(partido)
 
-            # self._jornadas[jornada.numero] = jornada
             self._almacen.save(jornada)
 
             print(f"Jornada {jornada.get_numero()} rastreada")

@@ -11,7 +11,7 @@ class Modelable(metaclass=ABCMeta):
     def get_lista_campos_disponibles(self) -> list:
         return self._model.get_available_fields_list()
 
-    def set(self, key: str, value: str | int | float) -> None:
+    def set(self, key: str, value: str | int | float | list) -> None:
         self._model.set(key, value)
 
     def get(self, key: str) -> int | float | str:

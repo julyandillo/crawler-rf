@@ -13,3 +13,7 @@ def generate_dict_from_list(key: str, teams: list[Modelable]):
 
 def date_format(date: datetime) -> str:
     return date.strftime('%d-%m-%Y')
+
+
+def date_time_format(date: datetime) -> str:
+    return date.strftime('%d-%m-%Y %H:%M:%S')
