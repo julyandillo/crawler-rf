@@ -31,19 +31,22 @@ class Jornada(Modelable):
 
     def agrega_partido(self, partido: Partido):
         self._partidos.append(partido)
-        fecha_partido = datetime.strptime(partido.get_fecha(), '%d-%m-%Y')
+        self.establece_fechas_de_jornada(partido.get_fecha())
 
-        if not self._time_fecha_inicio or self._time_fecha_inicio > fecha_partido:
-            self._time_fecha_inicio = fecha_partido
+    def establece_fechas_de_jornada(self, fecha: str):
+        fecha_nueva = datetime.strptime(fecha, '%d-%m-%Y')
 
-        if not self._time_fecha_fin or self._time_fecha_fin < fecha_partido:
-            self._time_fecha_fin = fecha_partido
+        if not self._time_fecha_inicio or self._time_fecha_inicio > fecha_nueva:
+            self._time_fecha_inicio = fecha_nueva
+
+        if not self._time_fecha_fin or self._time_fecha_fin < fecha_nueva:
+            self._time_fecha_fin = fecha_nueva
 
         self.set('fecha_inicio', date_format(self._time_fecha_inicio))
         self.set('fecha_fin', date_format(self._time_fecha_fin))
 
     def ver_jornada(self):
-        print(''.ljust(50, '-'))
+        print("".ljust(50, "-"))
         print(f'Jornada {self.get("numero")}:')
         print(f"Inicio: {self.get('fecha_inicio')} | Fin: {self.get('fecha_fin')}")
         print(''.ljust(50, '-'))
