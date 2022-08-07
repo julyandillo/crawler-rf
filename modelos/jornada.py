@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from builders.partido_builder import PartidoBuilder
 from modelos.json_structure import JsonStructure
 from modelos.modelable import Modelable
 from modelos.partido import Partido
@@ -53,18 +54,6 @@ class Jornada(Modelable):
         print(f"Inicio: {self.get('fecha_inicio')} | Fin: {self.get('fecha_fin')}")
         print(''.ljust(50, '-'))
         print(*self._partidos, sep='\n')
-
-    @staticmethod
-    def crea_jornada(jornada_almacenada: dict):
-        jornada = Jornada()
-        for key, value in jornada_almacenada.items():
-            if key != 'partidos':
-                jornada.set(key, value)
-            else:
-                for partido_almacenado in value:
-                    jornada.agrega_partido(Partido.crea_partido(partido_almacenado))
-
-        return jornada
 
     @classmethod
     def get_json_structure(cls) -> JsonStructure:

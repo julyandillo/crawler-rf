@@ -3,6 +3,7 @@ from modelos.jornada import Jornada
 from services.json_services import save_as_json, load_from_json
 from utils.utils import generate_dict_from_list
 from exceptions.invalid_key_error import InvalidKeyError
+from builders.jornada_builder import JornadaBuilder
 
 
 FILE_NAME = 'jornadas.json'
@@ -28,6 +29,6 @@ class AlmacenJornadasJson(AlmacenJornadas):
     def load_all(self) -> dict:
         self._jornadas = generate_dict_from_list(
             Jornada.get_json_structure().key,
-            [Jornada.crea_jornada(jornada_almacenada) for jornada_almacenada in load_from_json(FILE_NAME)])
+            [JornadaBuilder(jornada_almacenada).get_jornada() for jornada_almacenada in load_from_json(FILE_NAME)])
 
         return self._jornadas
