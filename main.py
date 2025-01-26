@@ -1,5 +1,5 @@
 from menu import Menu
-from rastreadores.rastreador_calendario import RastreadorCalendario
+from rastreator import Rastreator
 
 
 def main():
@@ -7,10 +7,6 @@ def main():
     menu.muestra_menu()
 
 
-def main_v():
-    calendario = RastreadorCalendario()
-    calendario.rastrea_calendario()
-
-
 if __name__ == '__main__':
-    main()
+    rastreator = Rastreator()
+    rastreator.scrap_teams()

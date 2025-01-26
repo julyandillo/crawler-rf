@@ -1,5 +1,5 @@
-from exceptions.base_error import BaseError
+from exceptions.crawler_error import CrawlerError
 
 
-class InvalidKeyError(BaseError):
+class InvalidKeyError(CrawlerError):
     pass
