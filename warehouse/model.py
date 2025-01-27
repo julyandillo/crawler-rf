@@ -51,7 +51,7 @@ class Model:
 
     def prepare(self) -> dict:
         return {field.target_name: field.value for field in self._available_fields.values() if
-                field.target_name is not None}
+                field.target_name is not None and field.value is not None}
 
     def __repr__(self):
         return f"{self._available_fields}"
