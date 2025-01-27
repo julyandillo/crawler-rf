@@ -43,7 +43,7 @@ class API:
             raise APIError(self._content['message'])
 
         if response.status_code != requests.codes.ok:
-            raise APIError(self._content['msg'])
+            raise APIError(f"{self._content['msg']} {self._content['detalles'] or ''}")
 
     def make_patch_request(self, path: str, entity: dict) -> dict:
         response = requests.patch(f"{URL}{path}", headers=self._headers, json=entity)

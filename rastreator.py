@@ -36,6 +36,7 @@ class Rastreator:
                 team_matches_manager.save_match(team.get_key_for_matches_manager(), id_team)
 
             except WarehouseError as e:
+                print(f"Error al guardar equipo {team.get_value_for('Nombre corto')}")
                 print(e)
 
         team_matches_manager.flush()
