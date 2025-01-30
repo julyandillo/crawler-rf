@@ -25,3 +25,6 @@ class MatchesManager:
 
     def load_id_warehouse(self, key: int | str) -> int:
         return self._matches.get(key, self.NOT_EXISTS)
+
+    def load_all(self) -> iter:
+        return self._matches.keys()

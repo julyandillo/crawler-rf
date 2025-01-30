@@ -48,7 +48,9 @@ class APIModelManager(ModelManager):
             Field(crawler_name='País', target_name='nacionalidad'),
             Field(crawler_name='Altura', datatype='int'),
             Field(crawler_name='Peso', datatype='int'),
-            Field(crawler_name='Demarcación', target_name='posicion')
+            Field(crawler_name='Demarcación', target_name='posicion'),
+            Field(crawler_name='Equipo'),
+            Field(crawler_name='Dorsal', datatype='int')
         ]
 
         return Model(fields=fields, key_matches_manager='')

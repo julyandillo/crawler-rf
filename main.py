@@ -9,4 +9,4 @@ def main():
 
 if __name__ == '__main__':
     rastreator = Rastreator()
-    rastreator.scrap_teams()
+    rastreator.scrap_players()

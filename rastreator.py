@@ -1,5 +1,6 @@
 from api_warehouse.api_model_manager import APIModelManager
 from api_warehouse.api_warehouse import APIWarehouse
+from crawlers.player_crawler import PlayerCrawler
 from crawlers.stadium_crawler import StadiumCrawler
 from crawlers.team_crawler import TeamCrawler
 from matches_manager.matches_manager import MatchesManager
@@ -65,3 +66,12 @@ class Rastreator:
             self._warehouse.update_stadium(id_stadium, stadium)
 
         self._warehouse.set_stadium_for_team(id_stadium, id_team)
+
+    def scrap_players(self) -> None:
+        teams_crawler = TeamCrawler(self._model_manager)
+        player_crawler = PlayerCrawler(self._model_manager)
+
+        # for team in teams_crawler.get_scraped_teams():
+        #     url = team.get_value_for('URL del equipo en RF')
+        #     player_crawler.get_scraped_players_of_team(url[url.rfind("/")+1:])
+        player_crawler.get_scraped_players_of_team('Athletic-Bilbao')

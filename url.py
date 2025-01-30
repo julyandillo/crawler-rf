@@ -15,4 +15,4 @@ class Urls:
 
     @classmethod
     def url_plantilla_page(cls, team: str) -> str:
-        return f"https://{cls.dominio}/plantilla/{team}"
+        return f"{cls.dominio}/plantilla/{team}"
