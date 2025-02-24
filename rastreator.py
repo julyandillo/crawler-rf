@@ -68,10 +68,14 @@ class Rastreator:
         self._warehouse.set_stadium_for_team(id_stadium, id_team)
 
     def scrap_players(self) -> None:
-        teams_crawler = TeamCrawler(self._model_manager)
+        # teams_crawler = TeamCrawler(self._model_manager)
         player_crawler = PlayerCrawler(self._model_manager)
+        # matches_manager = self._matches_manager_factory.get_player_matches_manager()
 
-        # for team in teams_crawler.get_scraped_teams():
-        #     url = team.get_value_for('URL del equipo en RF')
-        #     player_crawler.get_scraped_players_of_team(url[url.rfind("/")+1:])
-        player_crawler.get_scraped_players_of_team('Athletic-Bilbao')
+        # for team in teams_crawler.get_scraped_teams()[:1]:
+        #    url = team.get_value_for('URL del equipo en RF')
+        #    players = player_crawler.get_scraped_players_of_team(url[url.rfind("/")+1:])
+
+        players = player_crawler.get_scraped_players_of_team('Athletic-Bilbao')
+        for player in players:
+            print(player)

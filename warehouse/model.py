@@ -5,15 +5,17 @@ from .field import Field
 
 
 class Model:
-    """ Clase que almacena en un diccionario todos los campos rastreados por cada rastreador.
+    """
+    Clase que almacena en un diccionario todos los campos rastreados por cada rastreador.
     El diccionario tendrá como clave el nombre del campo del rastreador y como valor una instancia de la clase Field
      """
+    VALUE_NOT_PARSED = 'Value not parsed'
 
     def __init__(self, *, fields: list[Field], key_matches_manager='', key_string: str | Callable | None = None):
         self._available_fields = {field.crawler_name: field for field in fields}
         self._available_field_list = self._available_fields.keys()
         self._key_for_matches_manager = key_matches_manager
-        self._key_string = key_string or key_matches_manager
+        self._key_string = key_string
 
     def add_field(self, field: Field) -> Self:
         self._available_fields[field.crawler_name] = field
@@ -41,7 +43,7 @@ class Model:
         if name not in self._available_field_list:
             raise InvalidFieldError(name)
 
-        return self._available_fields[name].value or 'Value not parsed'
+        return self._available_fields[name].value or self.VALUE_NOT_PARSED
 
     def get_key_for_matches_manager(self) -> str:
         if self._key_for_matches_manager not in self._available_field_list:
@@ -57,7 +59,10 @@ class Model:
         return f"{self._available_fields}"
 
     def __str__(self):
+        if callable(self._key_string):
+            return self._key_string(self)
+
         if isinstance(self._key_string, str):
             return f"{self._key_string}: {self._available_fields[self._key_string].value}"
 
-        return self._key_string(self)
+        return "\n".join([f"{name}: {field.value}" for name, field in self._available_fields.items()])

@@ -53,4 +53,5 @@ class APIModelManager(ModelManager):
             Field(crawler_name='Dorsal', datatype='int')
         ]
 
-        return Model(fields=fields, key_matches_manager='')
+        to_str = lambda f: f"{f.get_value_for('Nombre')} [{f.get_value_for('Dorsal')}]"
+        return Model(fields=fields, key_matches_manager='Nombre', key_string=to_str)
