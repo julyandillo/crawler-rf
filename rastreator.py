@@ -54,7 +54,7 @@ class Rastreator:
             except WarehouseError as e:
                 print(e)
 
-    def _save_stadium(self, stadium: Model, id_team: int):
+    def _save_stadium(self, stadium: Model, id_team: int) -> None:
         matches_manager = self._matches_manager_factory.get_stadium_matches_manager()
 
         id_stadium = matches_manager.load_id_warehouse(stadium.get_key_for_matches_manager())
@@ -68,14 +68,27 @@ class Rastreator:
         self._warehouse.set_stadium_for_team(id_stadium, id_team)
 
     def scrap_players(self) -> None:
-        # teams_crawler = TeamCrawler(self._model_manager)
+        teams_crawler = TeamCrawler(self._model_manager)
         player_crawler = PlayerCrawler(self._model_manager)
-        # matches_manager = self._matches_manager_factory.get_player_matches_manager()
 
-        # for team in teams_crawler.get_scraped_teams()[:1]:
-        #    url = team.get_value_for('URL del equipo en RF')
-        #    players = player_crawler.get_scraped_players_of_team(url[url.rfind("/")+1:])
+        for team in teams_crawler.get_scraped_teams():
+            url = team.get_value_for('URL del equipo en RF')
+            print(f"Rastreando jugadores de {team.get_value_for('Nombre completo')}...")
+            for player in player_crawler.get_scraped_players_of_team(url[url.rfind("/") + 1:]):
+                try:
+                    self._save_player(player)
 
-        players = player_crawler.get_scraped_players_of_team('Athletic-Bilbao')
-        for player in players:
-            print(player)
+                except WarehouseError as e:
+                    print(e)
+
+    def _save_player(self, player) -> None:
+        player_matches_manager = self._matches_manager_factory.get_player_matches_manager()
+
+        id_player = player_matches_manager.load_id_warehouse(player.get_key_for_matches_manager())
+
+        if id_player == MatchesManager.NOT_EXISTS:
+            id_player = self._warehouse.save_player(player)
+            player_matches_manager.save_match(player.get_key_for_matches_manager(), id_player)
+            player_matches_manager.flush()
+        else:
+            self._warehouse.update_player(id_player, player)

@@ -17,6 +17,10 @@ class Warehouse(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def update_player(self, id_player: int, player: Model) -> None:
+        pass
+
+    @abstractmethod
     def save_stadium(self, stadium: Model) -> int:
         pass
 

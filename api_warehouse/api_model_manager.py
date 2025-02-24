@@ -1,3 +1,4 @@
+from api_warehouse.api_transforms_data import transform_position, transform_date
 from warehouse.field import Field
 from warehouse.model import Model
 from warehouse.model_manager import ModelManager
@@ -43,15 +44,16 @@ class APIModelManager(ModelManager):
         fields = [
             Field(crawler_name='Nombre', target_name='apodo'),
             Field(crawler_name='Completo', target_name='nombre'),
-            Field(crawler_name='Fecha de nacimiento', target_name='fechaNacimiento'),
+            Field(crawler_name='Fecha de nacimiento', target_name='fechaNacimiento', transform=transform_date),
             Field(crawler_name='Lugar de nacimiento', target_name='paisNacimiento'),
-            Field(crawler_name='País', target_name='nacionalidad'),
-            Field(crawler_name='Altura', datatype='int'),
-            Field(crawler_name='Peso', datatype='int'),
-            Field(crawler_name='Demarcación', target_name='posicion'),
+            Field(crawler_name='País'),
+            Field(crawler_name='Nacionalidad', target_name='nacionalidad'),
+            Field(crawler_name='Altura', datatype='int', target_name='altura'),
+            Field(crawler_name='Peso', datatype='int', target_name='peso'),
+            Field(crawler_name='Demarcación', target_name='posicion', transform=transform_position),
             Field(crawler_name='Equipo'),
             Field(crawler_name='Dorsal', datatype='int')
         ]
 
-        to_str = lambda f: f"{f.get_value_for('Nombre')} [{f.get_value_for('Dorsal')}]"
+        to_str = lambda f: f"{f.get_value_for('Nombre')} [{f.get_value_for('Demarcación')}]"
         return Model(fields=fields, key_matches_manager='Nombre', key_string=to_str)

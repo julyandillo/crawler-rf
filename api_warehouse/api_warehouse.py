@@ -13,9 +13,7 @@ class APIWarehouse(Warehouse):
 
     def save_team(self, team: Model) -> int:
         try:
-            entity = team.prepare()
-            response = self._api.make_post_request('/equipos', entity)
-
+            response = self._api.make_post_request('/equipos', team.prepare())
             return response['id']
 
         except APIError as e:
@@ -23,19 +21,25 @@ class APIWarehouse(Warehouse):
 
     def update_team(self, id_team: int, team: Model) -> bool:
         try:
-            entity = team.prepare()
-            self._api.make_patch_request(f"/equipos/{id_team}", entity)
-
+            self._api.make_patch_request(f"/equipos/{id_team}", team.prepare())
             return True
 
         except APIError as e:
             raise WarehouseError(str(e)) from e
 
     def save_player(self, player: Model) -> int:
-        entity = player.prepare()
-        response = self._api.make_post_request('/jugadores', entity)
+        try:
+            response = self._api.make_post_request('/jugadores', player.prepare())
+            return response['id']
 
-        return response['id']
+        except APIError as e:
+            raise WarehouseError(e) from e
+
+    def update_player(self, id_player: int, player: Model) -> None:
+        try:
+            self._api.make_patch_request(f"/jugadores/{id_player}", player.prepare())
+        except APIError as e:
+            raise WarehouseError(str(e)) from e
 
     def save_stadium(self, stadium: Model) -> int:
         try:
