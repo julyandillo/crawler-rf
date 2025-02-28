@@ -24,7 +24,8 @@ class APIModelManager(ModelManager):
 
         to_str = lambda f: f"{f.get_value_for('Nombre completo')} [{f.get_value_for('Nombre corto')}]"
 
-        return Model(fields=fields, key_matches_manager='Nombre del equipo', key_string=to_str)
+        return Model(fields=fields, key_matches_manager='Nombre del equipo', key_string=to_str,
+                     model_type=Model.TEAM_TYPE)
 
     def get_stadium_model(self) -> Model:
         fields = [
@@ -38,7 +39,7 @@ class APIModelManager(ModelManager):
             Field(crawler_name='Equipo')
         ]
 
-        return Model(fields=fields, key_matches_manager='Nombre')
+        return Model(fields=fields, key_matches_manager='Nombre', model_type=Model.STADIUM_TYPE)
 
     def get_player_model(self) -> Model:
         fields = [
@@ -56,4 +57,4 @@ class APIModelManager(ModelManager):
         ]
 
         to_str = lambda f: f"{f.get_value_for('Nombre')} [{f.get_value_for('Demarcación')}]"
-        return Model(fields=fields, key_matches_manager='Nombre', key_string=to_str)
+        return Model(fields=fields, key_matches_manager='Nombre', key_string=to_str, model_type=Model.PLAYER_TYPE)

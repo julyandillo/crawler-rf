@@ -58,7 +58,7 @@ class APIWarehouse(Warehouse):
         except APIError as e:
             raise WarehouseError(str(e)) from e
 
-    def set_stadium_for_team(self, stadium: int, team: int) -> bool:
+    def set_current_stadium_of_team(self, stadium: int, team: int) -> bool:
         try:
             self._api.make_post_request("/equipos/estadio", {
                 'equipo': team,

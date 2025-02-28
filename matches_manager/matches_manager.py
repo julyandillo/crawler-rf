@@ -1,13 +1,13 @@
 import json
 from os.path import isfile
 
+from .matches_manager_error import MatchesManagerError
+
 
 class MatchesManager:
     """
     Clase para guardar la relación entre id/clave almacenada en un almacén y id/clave de la web resultados-futbol.com
     """
-    NOT_EXISTS = -1
-
     def __init__(self, filename: str):
         self._filename = filename if filename.endswith('.json') else f"{filename}.json"
         self._matches = {}
@@ -20,11 +20,17 @@ class MatchesManager:
         with open(self._filename, 'w') as file:
             json.dump(self._matches, file, indent=2, sort_keys=True)
 
-    def save_match(self, key: int | str, id_warehouse: int) -> None:
-        self._matches[key] = id_warehouse
+    def save_match(self, key: int | str, match_id: int) -> None:
+        self._matches[key] = match_id
 
-    def load_id_warehouse(self, key: int | str) -> int:
-        return self._matches.get(key, self.NOT_EXISTS)
+    def get_match_id(self, key: int | str) -> int:
+        if key not in self._matches.keys():
+            raise MatchesManagerError(f"No existe ningún match asociado para la clave '{key}'")
+
+        return self._matches.get(key)
+
+    def exists(self, key) -> bool:
+        return key in self._matches.keys()
 
     def load_all(self) -> iter:
         return self._matches.keys()

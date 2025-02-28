@@ -19,76 +19,63 @@ class Rastreator:
 
     def scrap_teams(self):
         crawler = TeamCrawler(self._model_manager)
-        teams = crawler.get_scraped_teams()
+        teams_matches_manager = self._matches_manager_factory.get_team_matches_manager()
 
-        self._save_teams(teams)
-
-    def _save_teams(self, teams: list[Model]):
-        team_matches_manager = self._matches_manager_factory.get_team_matches_manager()
-
-        for team in teams:
+        for team in crawler.get_scraped_teams():
             try:
-                id_team = team_matches_manager.load_id_warehouse(team.get_key_for_matches_manager())
-                if id_team == MatchesManager.NOT_EXISTS:
-                    id_team = self._warehouse.save_team(team)
-                else:
-                    self._warehouse.update_team(id_team, team)
-
-                team_matches_manager.save_match(team.get_key_for_matches_manager(), id_team)
+                self._save_model(teams_matches_manager, team)
 
             except WarehouseError as e:
                 print(f"Error al guardar equipo {team.get_value_for('Nombre corto')}")
                 print(e)
 
-        team_matches_manager.flush()
+        teams_matches_manager.flush()
 
     def scrap_stadiums(self) -> None:
         teams_matches_manager = self._matches_manager_factory.get_team_matches_manager()
         crawler = StadiumCrawler(self._model_manager)
+        stadium_matches_manager = self._matches_manager_factory.get_stadium_matches_manager()
 
         for stadium in crawler.get_scraped_stadiums():
             try:
-                id_team = teams_matches_manager.load_id_warehouse(stadium.get_value_for('Equipo'))
-                self._save_stadium(stadium, id_team)
+                id_team = teams_matches_manager.get_match_id(stadium.get_value_for('Equipo'))
+                id_stadium = self._save_model(stadium_matches_manager, stadium)
+
+                self._warehouse.set_current_stadium_of_team(id_stadium, id_team)
 
             except WarehouseError as e:
+                print(f"Ha ocurrido un error al guardar el estadio {stadium}")
                 print(e)
 
-    def _save_stadium(self, stadium: Model, id_team: int) -> None:
-        matches_manager = self._matches_manager_factory.get_stadium_matches_manager()
-
-        id_stadium = matches_manager.load_id_warehouse(stadium.get_key_for_matches_manager())
-        if id_stadium == MatchesManager.NOT_EXISTS:
-            id_stadium = self._warehouse.save_stadium(stadium)
-            matches_manager.save_match(stadium.get_key_for_matches_manager(), id_stadium)
-            matches_manager.flush()
-        else:
-            self._warehouse.update_stadium(id_stadium, stadium)
-
-        self._warehouse.set_stadium_for_team(id_stadium, id_team)
+        stadium_matches_manager.flush()
 
     def scrap_players(self) -> None:
         teams_crawler = TeamCrawler(self._model_manager)
         player_crawler = PlayerCrawler(self._model_manager)
+        matches_manager = self._matches_manager_factory.get_player_matches_manager()
 
         for team in teams_crawler.get_scraped_teams():
             url = team.get_value_for('URL del equipo en RF')
             print(f"Rastreando jugadores de {team.get_value_for('Nombre completo')}...")
             for player in player_crawler.get_scraped_players_of_team(url[url.rfind("/") + 1:]):
                 try:
-                    self._save_player(player)
+                    self._save_model(matches_manager, player, True)
 
                 except WarehouseError as e:
+                    print(f"Ha ocurrido un error al guardar el jugador, {player}")
                     print(e)
 
-    def _save_player(self, player) -> None:
-        player_matches_manager = self._matches_manager_factory.get_player_matches_manager()
+        matches_manager.flush()
 
-        id_player = player_matches_manager.load_id_warehouse(player.get_key_for_matches_manager())
+    def _save_model(self, matches_manager: MatchesManager, model: Model, override=False) -> int:
+        if matches_manager.exists(model.get_key_for_matches_manager()):
+            match_id = matches_manager.get_match_id(model.get_key_for_matches_manager())
+            if override:
+                self._warehouse.update_model(match_id, model)
 
-        if id_player == MatchesManager.NOT_EXISTS:
-            id_player = self._warehouse.save_player(player)
-            player_matches_manager.save_match(player.get_key_for_matches_manager(), id_player)
-            player_matches_manager.flush()
-        else:
-            self._warehouse.update_player(id_player, player)
+            return match_id
+
+        match_id = self._warehouse.save_model(model)
+        matches_manager.save_match(model.get_key_for_matches_manager(), match_id)
+
+        return match_id

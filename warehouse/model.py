@@ -11,11 +11,18 @@ class Model:
      """
     VALUE_NOT_PARSED = 'Value not parsed'
 
-    def __init__(self, *, fields: list[Field], key_matches_manager='', key_string: str | Callable | None = None):
+    TEAM_TYPE = 'team'
+    STADIUM_TYPE = 'stadium'
+    PLAYER_TYPE = 'player'
+    MATCH_TYPE = 'match'
+
+    def __init__(self, *, fields: list[Field], key_matches_manager='', key_string: str | Callable | None = None,
+                 model_type: str | None = None):
         self._available_fields = {field.crawler_name: field for field in fields}
         self._available_field_list = self._available_fields.keys()
         self._key_for_matches_manager = key_matches_manager
         self._key_string = key_string
+        self._model_type = model_type
 
     def add_field(self, field: Field) -> Self:
         self._available_fields[field.crawler_name] = field
@@ -54,6 +61,9 @@ class Model:
     def prepare(self) -> dict:
         return {field.target_name: field.value for field in self._available_fields.values() if
                 field.target_name is not None and field.value is not None}
+
+    def get_type(self) -> None | str:
+        return self._model_type
 
     def __repr__(self):
         return f"{self._available_fields}"
