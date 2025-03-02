@@ -69,3 +69,24 @@ class APIWarehouse(Warehouse):
 
         except APIError as e:
             raise WarehouseError(str(e)) from e
+
+    def save_squad(self, players: list[dict]) -> int:
+        try:
+            response = self._api.make_post_request('/plantillas', {
+                'jugadores': players
+            })
+
+            return response['plantilla']
+
+        except APIError as e:
+            raise WarehouseError(str(e)) from e
+
+    def associate_team_squad_competition(self, team_id: int, squa_id: int, competition_id: int) -> None:
+        try:
+            self._api.make_post_request(f"/equipos/{team_id}/competiciones", {
+                'competicion': competition_id,
+                'plantilla': squa_id
+            })
+
+        except APIError as e:
+            raise WarehouseError(f"{e}") from e

@@ -3,6 +3,7 @@ import os
 import time
 
 import requests
+from requests import HTTPError
 
 from .api_error import APIError
 
@@ -29,30 +30,50 @@ class API:
 
             self._token = filecontent['token']
 
-    def make_post_request(self, path: str, entity: dict) -> dict:
-        # con el parámetro json se añade automáticamente la cabecera Content-type: application/json
-        response = requests.post(f"{URL}{path}", headers=self._headers, json=entity)
-        self._parse_response(response)
+    def make_post_request(self, path: str, payload: dict) -> dict:
+        try:
+            # con el parámetro json se añade automáticamente la cabecera Content-type: application/json
+            response = requests.post(f"{URL}{path}", headers=self._headers, json=payload)
+            self._parse_response(response)
 
-        return self._content
+            return self._content
+
+        except HTTPError as e:
+            with open('error.json', 'w') as json_file:
+                json.dump({
+                    'exception': f"{e}",
+                    'request': payload,
+                    'response': response.json() if 'response' in locals() else ''
+                }, json_file)
+            raise APIError(f"URL NOT FOUND - {path}")
 
     def _parse_response(self, response: requests.Response) -> None:
+        response.raise_for_status()
+
         self._content = response.json()
 
         if response.status_code == requests.codes.unauthorized:
             raise APIError(self._content['message'])
 
-        if response.status_code != requests.codes.ok:
+        if response.status_code != requests.codes.OK:
             raise APIError(f"{self._content['msg']} {self._content.get('detalles', '')}")
 
     def make_patch_request(self, path: str, entity: dict) -> dict:
-        response = requests.patch(f"{URL}{path}", headers=self._headers, json=entity)
-        self._parse_response(response)
+        try:
+            response = requests.patch(f"{URL}{path}", headers=self._headers, json=entity)
+            self._parse_response(response)
 
-        return self._content
+            return self._content
+
+        except HTTPError:
+            raise APIError(f"URL NOT FOUND - {path}")
 
     def make_get_request(self, path: str, params: dict) -> dict:
-        response = requests.get(f"{URL}{path}", params=params, headers=self._headers)
-        self._parse_response(response)
+        try:
+            response = requests.get(f"{URL}{path}", params=params, headers=self._headers)
+            self._parse_response(response)
 
-        return self._content
+            return self._content
+
+        except HTTPError:
+            raise APIError(f"URL NOT FOUND - {path}")

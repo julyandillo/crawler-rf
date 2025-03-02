@@ -56,3 +56,11 @@ class Warehouse(metaclass=ABCMeta):
     @abstractmethod
     def set_current_stadium_of_team(self, stadium: int, team: int) -> bool:
         pass
+
+    @abstractmethod
+    def save_squad(self, players: list[dict]) -> int:
+        pass
+
+    @abstractmethod
+    def associate_team_squad_competition(self, team_id: int, squa_id: int, competition_id: int) -> None:
+        pass
