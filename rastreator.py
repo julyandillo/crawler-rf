@@ -1,3 +1,7 @@
+import os
+
+from dotenv import load_dotenv
+
 from api_warehouse.api_model_manager import APIModelManager
 from api_warehouse.api_warehouse import APIWarehouse
 from crawlers.player_crawler import PlayerCrawler
@@ -8,6 +12,7 @@ from matches_manager.matches_manager_factory import MatchesManagerFactory
 from warehouse.model import Model
 from warehouse.warehouse_error import WarehouseError
 
+load_dotenv()
 
 class Rastreator:
     """ Clase para controlar todos los crawlers que se utilizan  """
@@ -87,7 +92,7 @@ class Rastreator:
             self._warehouse.associate_team_squad_competition(
                 teams_matches_manaher.get_match_id(team.get_key_for_matches_manager()),
                 squad_id,
-                1
+                int(os.getenv('COMPETITION_ID'))
             )
 
         player_matches_manager.flush()
