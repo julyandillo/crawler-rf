@@ -50,7 +50,11 @@ class Model:
         if name not in self._available_field_list:
             raise InvalidFieldError(name)
 
-        return self._available_fields[name].value or self.VALUE_NOT_PARSED
+        value = self._available_fields[name].value
+        if value is None:
+            return self.VALUE_NOT_PARSED
+
+        return value
 
     def get_key_for_matches_manager(self) -> str:
         if self._key_for_matches_manager not in self._available_field_list:
